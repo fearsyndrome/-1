@@ -1,0 +1,87 @@
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Кнопка для запуска ActivityForResult
+        findViewById(R.id.button).setOnClickListener(v -> {
+            Intent intent = new Intent(this, SecondActivity.class);
+
+            // Передача строкового значения
+            intent.putExtra("stringKey", "Привет, мир!");
+
+            // Передача числового значения типа int
+            intent.putExtra("intKey", 123);
+
+            // Передача числового значения типа float
+            intent.putExtra("floatKey", 3.14f);
+
+            // Передача числового значения типа long
+            intent.putExtra("longKey", 9876543210L);
+
+            // Запуск SecondActivity с ожиданием результата (важно!)
+            startActivityForResult(intent, 1);
+        });
+    }
+
+     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            if (data != null) {
+                // Получение данных из Intent
+                String stringValue = data.getStringExtra("stringKey");
+                int intValue = data.getIntExtra("intKey", 0); // 0 - значение по умолчанию
+                float floatValue = data.getFloatExtra("floatKey", 0.0f);
+                long longValue = data.getLongExtra("longKey", 0);
+
+
+                TextView textView = findViewById(R.id.textViewResult); // Предполагая, что у вас есть TextView с id textViewResult
+                textView.setText("Полученные данные:\n" +
+                        "Строка: " + stringValue + "\n" +
+                        "Целое число: " + intValue + "\n" +
+                        "Число с плавающей точкой: " + floatValue + "\n" +
+                        "Длинное целое число: " + longValue);
+            }
+        }
+    }
+}
+
+// SecondActivity.java
+import android.content.Intent;
+import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
+
+
+public class SecondActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+       //setContentView(R.layout.activity_second);
+        Intent intent = getIntent();
+        if (intent != null) {
+            String stringValue = intent.getStringExtra("stringKey");
+            int intValue = intent.getIntExtra("intKey", 0); //Обратите внимание на значение по умолчанию
+            float floatValue = intent.getFloatExtra("floatKey", 0.0f);
+            long longValue = intent.getLongExtra("longKey", 0);
+        }
+        findViewById(R.id.button2).setOnClickListener(v -> {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("stringKey", stringValue);
+            resultIntent.putExtra("intKey", intValue);
+            resultIntent.putExtra("floatKey", floatValue);
+            resultIntent.putExtra("longKey", longValue);
+            setResult(RESULT_OK, resultIntent); //Установите RESULT_OK
+            finish(); // Закройте SecondActivity
+        });
+    }
+}
