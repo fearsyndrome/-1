@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
             // Передача числового значения типа long
             intent.putExtra("longKey", 9876543210L);
 
-            // Запуск SecondActivity с ожиданием результата (важно!)
+            // Запуск SecondActivity с ожиданием результата.
             startActivityForResult(intent, 1);
         });
     }
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 long longValue = data.getLongExtra("longKey", 0);
 
 
-                TextView textView = findViewById(R.id.textViewResult); // Предполагая, что у вас есть TextView с id textViewResult
+                TextView textView = findViewById(R.id.textViewResult); // TextView с id textViewResult
                 textView.setText("Полученные данные:\n" +
                         "Строка: " + stringValue + "\n" +
                         "Целое число: " + intValue + "\n" +
@@ -70,7 +70,7 @@ public class SecondActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             String stringValue = intent.getStringExtra("stringKey");
-            int intValue = intent.getIntExtra("intKey", 0); //Обратите внимание на значение по умолчанию
+            int intValue = intent.getIntExtra("intKey", 0); 
             float floatValue = intent.getFloatExtra("floatKey", 0.0f);
             long longValue = intent.getLongExtra("longKey", 0);
         }
@@ -80,8 +80,8 @@ public class SecondActivity extends AppCompatActivity {
             resultIntent.putExtra("intKey", intValue);
             resultIntent.putExtra("floatKey", floatValue);
             resultIntent.putExtra("longKey", longValue);
-            setResult(RESULT_OK, resultIntent); //Установите RESULT_OK
-            finish(); // Закройте SecondActivity
+            setResult(RESULT_OK, resultIntent); // RESULT_OK
+            finish(); // Закрыть SecondActivity
         });
     }
 }
